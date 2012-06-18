@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 // Import new namespaces
 use Blogger\BlogBundle\Entity\Enquiry;
 use Blogger\BlogBundle\Form\EnquiryType;
-use Symfony\Component\HttpFoundation\Request;
+//use Symfony\Component\HttpFoundation\Request;
 
 class PageController extends Controller
 {
@@ -51,21 +51,5 @@ class PageController extends Controller
         //$request = $this->getRequest();
      }
      
-      /**
-     * Show a blog entry
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $blog = $em->getRepository('BloggerBlogBundle:Blog')->find($id);
-
-        if (!$blog) {
-            throw $this->createNotFoundException('Unable to find Blog post.');
-        }
-
-        return $this->render('BloggerBlogBundle:Blog:show.html.twig', array(
-            'blog'      => $blog,
-        ));
-    }
+   
 }
