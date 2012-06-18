@@ -1,0 +1,64 @@
+Blogger\BlogBundle\Entity\Blog:
+  type: entity
+  table: blog
+  fields:
+    id:
+      type: integer
+      length: null
+      precision: 0
+      scale: 0
+      nullable: false
+      unique: false
+      id: true
+      generator:
+        strategy: IDENTITY
+    title:
+      type: string
+      length: null
+      precision: 0
+      scale: 0
+      nullable: false
+      unique: false
+    author:
+      type: string
+      length: 100
+      precision: 0
+      scale: 0
+      nullable: false
+      unique: false
+    blog:
+      type: text
+      length: null
+      precision: 0
+      scale: 0
+      nullable: false
+      unique: false
+    image:
+      type: string
+      length: '20'
+      precision: 0
+      scale: 0
+      nullable: false
+      unique: false
+    tags:
+      type: text
+      length: null
+      precision: 0
+      scale: 0
+      nullable: false
+      unique: false
+    created:
+      type: datetime
+      length: null
+      precision: 0
+      scale: 0
+      nullable: false
+      unique: false
+    updated:
+      type: datetime
+      length: null
+      precision: 0
+      scale: 0
+      nullable: false
+      unique: false
+  lifecycleCallbacks: {  }
