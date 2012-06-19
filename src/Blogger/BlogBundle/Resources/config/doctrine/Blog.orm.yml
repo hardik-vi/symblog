@@ -1,5 +1,6 @@
 Blogger\BlogBundle\Entity\Blog:
   type: entity
+  repositoryClass: Blogger\BlogBundle\Repository\BlogRepository
   table: blog
   fields:
     id:

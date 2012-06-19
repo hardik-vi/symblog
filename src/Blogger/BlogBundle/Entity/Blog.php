@@ -6,8 +6,9 @@ namespace Blogger\BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Blogger\BlogBundle\Repository\BlogRepository")
  * @ORM\Table(name="blog")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Blog
 {
@@ -43,6 +44,9 @@ class Blog
      */
     protected $tags;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="blog")
+     */
     protected $comments;
 
     /**
@@ -55,6 +59,13 @@ class Blog
      */
     protected $updated;
 
+     public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+        $this->setCreated(new \DateTime());
+        $this->setUpdated(new \DateTime());
+    }
+    
     /**
      * Get id
      *
@@ -193,6 +204,13 @@ class Blog
     public function setUpdated($updated)
     {
         $this->updated = $updated;
+    }
+     /**
+     * @ORM\preUpdate
+     */
+    public function setUpdatedValue()
+    {
+       $this->setUpdated(new \DateTime());
     }
 
     /**
