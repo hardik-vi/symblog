@@ -1,7 +1,7 @@
-Blogger\BlogBundle\Entity\Blog:
+Blogger\BlogBundle\Entity\Comment:
   type: entity
-  repositoryClass: Blogger\BlogBundle\Repository\BlogRepository
-  table: blog
+  repositoryClass: Blogger\BlogBundle\Repository\CommentRepository
+  table: comment
   fields:
     id:
       type: integer
@@ -13,43 +13,22 @@ Blogger\BlogBundle\Entity\Blog:
       id: true
       generator:
         strategy: IDENTITY
-    title:
+    user:
       type: string
       length: null
       precision: 0
       scale: 0
       nullable: false
       unique: false
-    slug:
-      type: string
-      length: null
-      precision: 0
-      scale: 0
-      nullable: false
-      unique: false
-    author:
-      type: string
-      length: 100
-      precision: 0
-      scale: 0
-      nullable: false
-      unique: false
-    blog:
+    comment:
       type: text
       length: null
       precision: 0
       scale: 0
       nullable: false
       unique: false
-    image:
-      type: string
-      length: '20'
-      precision: 0
-      scale: 0
-      nullable: false
-      unique: false
-    tags:
-      type: text
+    approved:
+      type: boolean
       length: null
       precision: 0
       scale: 0
@@ -69,14 +48,16 @@ Blogger\BlogBundle\Entity\Blog:
       scale: 0
       nullable: false
       unique: false
-  oneToMany:
-    comments:
-      targetEntity: Blogger\BlogBundle\Entity\Comment
+  manyToOne:
+    blog:
+      targetEntity: Blogger\BlogBundle\Entity\Blog
       cascade: {  }
-      mappedBy: blog
-      inversedBy: null
+      mappedBy: null
+      inversedBy: comments
+      joinColumns:
+        blog_id:
+          referencedColumnName: id
       orphanRemoval: false
-      orderBy: null
   lifecycleCallbacks:
     preUpdate:
       - setUpdatedValue

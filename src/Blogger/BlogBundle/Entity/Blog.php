@@ -4,6 +4,7 @@
 namespace Blogger\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="Blogger\BlogBundle\Repository\BlogRepository")
@@ -45,7 +46,7 @@ class Blog
     protected $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="blog")
+     * @ORM\OneToMany(targetEntity="Blogger\BlogBundle\Entity\Comment", mappedBy="blog")
      */
     protected $comments;
 
@@ -58,6 +59,11 @@ class Blog
      * @ORM\Column(type="datetime")
      */
     protected $updated;
+    
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $slug;
 
      public function __construct()
     {
@@ -65,6 +71,8 @@ class Blog
         $this->setCreated(new \DateTime());
         $this->setUpdated(new \DateTime());
     }
+    
+    
     
     /**
      * Get id
@@ -84,8 +92,17 @@ class Blog
     public function setTitle($title)
     {
         $this->title = $title;
+        $this->setSlug($this->title);
+    }
+    public function setSlug($slug)
+    {
+        $this->slug = $this->slugify($slug);
     }
 
+    public function getSlug()
+    {
+        return $this->slug;
+    }
     /**
      * Get title
      *
@@ -94,6 +111,10 @@ class Blog
     public function getTitle()
     {
         return $this->title;
+    }
+    public function __toString()
+    {
+        return $this->getTitle();
     }
 
     /**
@@ -222,4 +243,52 @@ class Blog
     {
         return $this->updated;
     }
+    
+    /**
+     * Add comments
+     *
+     * @param Blogger\BlogBundle\Entity\Comment $comment
+     */
+    public function addComment(\Blogger\BlogBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+    }
+    
+    /**
+     * Get comments
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+    
+    public function slugify($text)
+{
+    // replace non letter or digits by -
+    $text = preg_replace('#[^\\pL\d]+#u', '-', $text);
+
+    // trim
+    $text = trim($text, '-');
+
+    // transliterate
+    if (function_exists('iconv'))
+    {
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+    }
+
+    // lowercase
+    $text = strtolower($text);
+
+    // remove unwanted characters
+    $text = preg_replace('#[^-\w]+#', '', $text);
+
+    if (empty($text))
+    {
+        return 'n-a';
+    }
+
+    return $text;
+}
 }

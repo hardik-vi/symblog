@@ -56,5 +56,25 @@ class PageController extends Controller
         //$request = $this->getRequest();
      }
      
-   
+   public function sidebarAction()
+   {
+        $em = $this->getDoctrine()
+                ->getEntityManager();
+
+        $tags = $em->getRepository('BloggerBlogBundle:Blog')
+                ->getTags();
+
+        $tagWeights = $em->getRepository('BloggerBlogBundle:Blog')
+                        ->getTagWeights($tags);
+        
+        $commentLimit   = $this->container->getParameter('latest_comment_limit');
+        //$commentLimit   =  10;
+        $latestComments = $em->getRepository('BloggerBlogBundle:Comment')
+                         ->getLatestComments($commentLimit);
+
+        return $this->render('BloggerBlogBundle:Page:sidebar.html.twig', array(
+            'latestComments'    => $latestComments,
+            'tags' => $tagWeights
+        ));
+    }
 }
